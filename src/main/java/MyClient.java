@@ -19,9 +19,21 @@ public class MyClient {
         String publisherId = UUID.randomUUID().toString();
         String TOPIC = "sensor/value";
         try {
-            mqttClient = new MqttClient("tcp://test.mosquitto.org:1883", publisherId);
+            // running mqtt broker "mosquitto" locally in docker
+            mqttClient = new MqttClient("tcp://localhost:1883", publisherId);
+            // docker pull eclipse-mosquitto with default configuration
+            // while running the image via UI select customize and enter port 1883 for local
+            // inside the image "cp /mosquitto-no-auth.config /mosquitto/config/mosquitto.conf"
+            // (have only two lines in config #1. listener 1883 #2. allow_anonymous true)
+
+            //running from free mosquitto brokers
+            //using same client for both pub sub
+            //mqttClient = new MqttClient("tcp://test.mosquitto.org:1883", publisherId);
+
+            //can have individual client connects for pub and sub.
             //mqttClientPub = new MqttClient("tcp://test.mosquitto.org:1883", publisherId);
             //mqttClientSub = new MqttClient("tcp://test.mosquitto.org:1883", publisherId);
+
         } catch (MqttException e) {
             e.printStackTrace();
             return;
